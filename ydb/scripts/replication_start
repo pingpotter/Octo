@@ -1,0 +1,51 @@
+#!/bin/bash
+
+state=$1
+filter=$2
+
+if [ -z $state ]
+then
+	echo "Replication state not define !!!"
+	exit 1
+
+elif [ $state == "primary" ]
+then
+	if [ ! -e ${ydb_repl_instance} ]
+	then
+		mupip replicate -instance_create -name=${ydb_repl_instname}
+	else
+		echo "${ydb_repl_instance} exit"
+	fi
+
+	if [ -z $filter ]
+	then
+		mupip replicate -source -start -rootprimary -secondary=127.0.0.1:${repl_port} -instsecondary=${ydb_repl_secondary_instname} -log=${ydb_log}/${ydb_repl_secondary_instname}_source_server.log
+	else
+		mupip replicate -source -start -rootprimary -secondary=127.0.0.1:${repl_port} -instsecondary=${ydb_repl_secondary_instname} -filter=${filter} -log=${ydb_log}/${ydb_repl_secondary_instname}_source_server.log
+	fi
+
+elif [ $state == "secondary" ]
+then
+	if [ ! -e ${ydb_repl_instance} ]
+	then
+		mupip replicate -instance_create -name=${ydb_repl_instname}
+	else
+		echo "${ydb_repl_instance} exit"
+	fi
+
+	mupip replicate -source -start -passive -instsecondary=${ydb_repl_secondary_instname} -log=${ydb_log}/${ydb_repl_secondary_instname}_source_server.log
+
+	if [ -z $filter ]
+	then
+		mupip replicate -receiver -start -listenport=${repl_listen_port} -log=${ydb_log}/${ydb_repl_instname}_receiver.log
+	
+	else
+		mupip replicate -receiver -start -listenport=${repl_listen_port} -filter=${filter} -log=${ydb_log}/${ydb_repl_instname}_receiver.log
+
+	fi
+else
+	echo "Replication state not found !!"
+	exit 2
+fi
+
+

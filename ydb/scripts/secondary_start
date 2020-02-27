@@ -1,0 +1,19 @@
+#!/bin/bash
+
+SCRIPTS_PATH=${UTIL_DIR}
+LOG_PATH=${ydb_dir}/log
+
+echo "Start replication in PRIMARY mode"
+
+	${SCRIPTS_PATH}/replication_start secondary > ${LOG_PATH}/start_replication.log_`date +"%y%m%d-%H%M%S"` 2>&1
+
+	STAT=$?
+
+if [ ${STAT} -eq 0 ]
+then
+	echo "Replication start successfully"
+	exit 0
+else
+	echo "Replication start fail"
+	exit ${STAT}
+fi

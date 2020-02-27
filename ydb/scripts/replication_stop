@@ -1,0 +1,21 @@
+#!/bin/bash
+state=$1
+
+if [ -z $state ]
+then
+	echo "Replication state not define !!!"
+	exit 1
+
+elif [ $state == "primary" ]
+then
+        mupip replicate -source -shutdown -timeout=2
+
+elif [ $state == "secondary" ]
+then
+	mupip replicate -receiver -shutdown -timeout=2
+        mupip replicate -source -shutdown -timeout=2
+
+else
+        echo "Replication state not found !!"
+	exit 2
+fi

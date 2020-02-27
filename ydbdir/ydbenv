@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+########### YottaDB base parameter ###########
+
 export ydb_dist=/ydb/ydb_dist_r128
 export ydb_dir=/ydbdir
 export ydb_gbldir=${ydb_dir}/gbls/mumps.gld
@@ -8,9 +11,23 @@ export ydb_log=${ydb_dir}/log
 export ydb_tmp=${ydb_dir}/ydbtmp
 export ydb_prompt='YDB> '
 export PATH="${ydb_dist}:${PATH}"
-#export ydb_repl_instance=${ydb_dir}/gbls/REPL_INSTANCE.DAT
-#export ydb_repl_instname=YDBDR
 
+
+########### Replication Parameter ###########
+
+export multi_site="N"
+
+if [ ${multi_site} = "N" ]
+then
+	export ydb_repl_instance=${ydb_dir}/gbls/REPL_INSTANCE.DAT
+	export ydb_repl_instname=YDBDC
+	export ydb_repl_secondary_instname=YDBDR
+	export repl_port=8989
+	export repl_listen_port=8989
+fi
+
+
+############# YottaDB Alias ################
 
 alias dse="$ydb_dist/dse"
 alias gde="$ydb_dist/mumps -run GDE"
@@ -18,6 +35,9 @@ alias ydb="$ydb_dist/mumps -dir"
 alias lke="$ydb_dist/lke"
 alias mupip="$ydb_dist/mupip"
 alias octo="$ydb_dist/plugin/bin/octo"
+
+
+########### Additional Parameter For Plugin and External Call #########
 
 export GTMXC_extcall="/ydb/ydbpip/extcall/extcall.xc"
 
@@ -28,6 +48,16 @@ export ydb_ci=${ydb_dist}/plugin/ydbocto.ci
 export ydb_xc_ydbposix=${ydb_dist}/plugin/ydbposix.xc
 
 
+########### Parameter for Custom Utility Scripts #############
+
+export UTIL_DIR=/ydb/scripts
+export PATH="${UTIL_DIR}:${PATH}"
+
+export JNL_DIR=${ydb_dir}/journal
+export NOJNL=""
+
+
 ########### Database file ###########
+
 export MUMPS_DATA=${ydb_dir}/gbls/mumps.data
 export MUMPS_OCTO=${ydb_dir}/gbls/mumps.octo
