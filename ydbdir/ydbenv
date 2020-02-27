@@ -1,0 +1,33 @@
+#!/bin/bash
+
+export ydb_dist=/ydb/ydb_dist_r128
+export ydb_dir=/ydbdir
+export ydb_gbldir=${ydb_dir}/gbls/mumps.gld
+export ydb_routines="${ydb_dir}/rtns/obj(${ydb_dir}/rtns) /ydb/ydbpip/rtns/obj(/ydb/ydbpip/rtns) ${ydb_dist} ${ydb_dist}/plugin/r"
+export ydb_log=${ydb_dir}/log
+export ydb_tmp=${ydb_dir}/ydbtmp
+export ydb_prompt='YDB> '
+export PATH="${ydb_dist}:${PATH}"
+#export ydb_repl_instance=${ydb_dir}/gbls/REPL_INSTANCE.DAT
+#export ydb_repl_instname=YDBDR
+
+
+alias dse="$ydb_dist/dse"
+alias gde="$ydb_dist/mumps -run GDE"
+alias ydb="$ydb_dist/mumps -dir"
+alias lke="$ydb_dist/lke"
+alias mupip="$ydb_dist/mupip"
+alias octo="$ydb_dist/plugin/bin/octo"
+
+export GTMXC_extcall="/ydb/ydbpip/extcall/extcall.xc"
+
+export LD_LIBRARY_PATH=/ydb/ydbpip/extcall:${gtm_dist}
+export LD_LIBRARY_PATH=${ydb_dist}:${LD_LIBRARY_PATH}
+
+export ydb_ci=${ydb_dist}/plugin/ydbocto.ci
+export ydb_xc_ydbposix=${ydb_dist}/plugin/ydbposix.xc
+
+
+########### Database file ###########
+export MUMPS_DATA=${ydb_dir}/gbls/mumps.data
+export MUMPS_OCTO=${ydb_dir}/gbls/mumps.octo

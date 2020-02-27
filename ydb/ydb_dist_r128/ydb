@@ -1,0 +1,27 @@
+#!/bin/sh
+#################################################################
+# Copyright (c) 2014-2017 Fidelity National Information         #
+# Services, Inc. and/or its subsidiaries. All rights reserved.  #
+#								#
+# Copyright (c) 2017-2019 YottaDB LLC and/or its subsidiaries.	#
+# All rights reserved.						#
+#								#
+#	This source code contains the intellectual property	#
+#	of its copyright holder(s), and is made available	#
+#	under a license.  If you do not know the terms of	#
+#	the license, please stop and do not read further.	#
+#								#
+#################################################################
+if [ ! -f "/ydb/ydb_dist_r128"/ydb_env_set ] ; then echo Cannot find file "/ydb/ydb_dist_r128"/ydb_env_set to source
+else
+    . "/ydb/ydb_dist_r128"/ydb_env_set
+    if [ 0 = $# ] ; then
+	$ydb_dist/yottadb -direct
+    elif [ "-help" = "$1" -o "-h" = "$1" -o "-?" = "$1" ] ; then
+	echo "ydb -dir[ect] to enter direct mode (halt returns to shell)"
+	echo "ydb -run <entryref> to start executing at an entryref"
+	echo "ydb -help / ydb -h / ydb -? to display this text"
+    else
+	$ydb_dist/yottadb $*
+    fi
+fi
